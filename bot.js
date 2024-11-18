@@ -7,6 +7,7 @@ const cron = require('node-cron');
 // Load environment variables
 const BOT_TOKEN = process.env.BOT_TOKEN;
 const ADMIN_CHAT_ID = process.env.ADMIN_CHAT_ID;
+const groupChatIds = process.env.GROUP_CHAT_IDS.split(',');
 const DATABASE_CONFIG = {
   user: process.env.DB_USER,
   host: process.env.DB_HOST,
@@ -62,7 +63,7 @@ async function sendMessageToUsers(messageText) {
   }
 }
 
-// Helper function to send messages to users
+// Helper function to send WED messages to users
 async function sendWedMessageToUsers(messageText) {
   try {
     const res = await client.query('SELECT telegram_id FROM users WHERE snooze = FALSE');
@@ -85,31 +86,48 @@ const resetWeeklyData = async () => {
       console.error('Error resetting weekly data:', error);
     }
   };
+// Scheduled Tasks (Cron jobs):
 
-// Schedule the weekly reset
-cron.schedule('0 0 * * 4', async () => {
-    console.log('Running weekly reset...');
-    await resetWeeklyData();
+//weekly messages for groups
+cron.schedule('0 22 * * 3', () => {
+  groupChatIds.forEach(chatId => {
+    const messageText = 'رزرو غذای هفته آینده فراموش نشود❗️'
+    bot.sendMessage(chatId, messageText);
   });
-
-// Scheduled Tasks (Cron jobs)
+}, {
+    timezone: "Asia/Tehran"
+});
 
 // Every Monday at 4 PM (Tehran time): Send admin panel
 cron.schedule('0 16 * * 1', async () => {
   console.log('Sending Monday admin panel...');
   await sendMondayPanelToAdmin();
+}, {
+  timezone: "Asia/Tehran"
 });
 
 // Every Tuesday at 8 PM (Tehran time): Reminder for users
 cron.schedule('0 20 * * 2', async () => {
   console.log('Sending Tuesday reminder...');
   await sendMessageToUsers('رزرو غذای هفته آینده فراموش نشود❗️');
+}, {
+  timezone: "Asia/Tehran"
 });
 
 // Every Wednesday at 8 PM (Tehran time): Final reminder
 cron.schedule('0 20 * * 3', async () => {
   console.log('Sending Wednesday final reminder...');
   await sendWedMessageToUsers('آخرین ساعات برای رزرو هفته آینده ⚠️\nرزرو غذای هفته آینده فراموش نشود❗️');
+}, {
+  timezone: "Asia/Tehran"
+});
+
+// Schedule the weekly reset
+cron.schedule('0 0 * * 4', async () => {
+  console.log('Running weekly reset...');
+  await resetWeeklyData();
+}, {
+  timezone: "Asia/Tehran"
 });
 
 // Handle /start command
