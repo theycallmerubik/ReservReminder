@@ -32,8 +32,7 @@ This project is a **Telegram bot** designed to help users stay updated about foo
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/your-username/telegram-reservation-reminder.git
-   cd telegram-reservation-reminder
+   git clone https://github.com/theycallmerubik/ReservReminder.git
    ```
 2. Install dependencies:
    ```bash
@@ -57,7 +56,7 @@ This project is a **Telegram bot** designed to help users stay updated about foo
 
 1. Start the bot:
    ```bash
-   node index.js
+   node bot.js
    ```
 2. Access the bot on Telegram and test its features using `/start` and `/help` commands.
 
