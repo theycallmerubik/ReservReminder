@@ -140,5 +140,5 @@ Feel free to contribute to this project by submitting issues or pull requests!
 
 For questions or suggestions, contact:
 
-- Telegram: @Ru\_bic
+- Telegram: [@Ru\_bic](https://t.me/Ru_Bic)
 - Email: [rubikmanyt@Gmail.com](mailto\:rubikmanyt@Gmail.com)
